@@ -1,0 +1,41 @@
+{
+    "name": "omnipay/gpn",
+    "type": "library",
+    "description": "GPN Data Europe driver for the Omnipay payment processing library",
+    "keywords": [
+        "gpn",
+        "2co",
+        "gateway",
+        "merchant",
+        "omnipay",
+        "pay",
+        "payment",
+        "twocheckout"
+    ],
+    "homepage": "https://github.com/gpndata/omnipay-gpndata",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rolando Toledo",
+            "email": "rtf@gpndata.com"
+        },
+        {
+            "name": "Omnipay Contributors",
+            "homepage": "https://github.com/..."
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Omnipay\\GPNDataEurope\\" : "src/" }
+    },
+    "require": {
+        "omnipay/common": "2.5.*"
+    },
+    "require-dev": {
+        "omnipay/tests": "~2.1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
