@@ -1,7 +1,7 @@
 {
     "name": "omnipay/gpn",
     "type": "library",
-    "description": "GPN Data Europe driver for the Omnipay payment processing library",
+    "description": "GPN SDK library",
     "keywords": [
         "gpn",
         "2co",
@@ -12,7 +12,7 @@
         "payment",
         "twocheckout"
     ],
-    "homepage": "https://github.com/gpndata/omnipay-gpndata",
+    "homepage": "https://github.com/gpndata/omnipay-gpn",
     "license": "MIT",
     "authors": [
         {
@@ -20,8 +20,8 @@
             "email": "rtf@gpndata.com"
         },
         {
-            "name": "Omnipay Contributors",
-            "homepage": "https://github.com/..."
+            "name": "Antonio Antelo Vazquez",
+            "email": "aav@gpndata.com"
         }
     ],
     "autoload": {
