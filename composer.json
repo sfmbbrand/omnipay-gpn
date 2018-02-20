@@ -1,5 +1,5 @@
 {
-    "name": "omnipay/gpn",
+    "name": "gpndata/omnipay-gpn",
     "type": "library",
     "description": "GPN SDK library",
     "keywords": [

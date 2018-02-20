@@ -6,7 +6,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "omnipay/gpn": "~1.0.0"
+        "gpndata/omnipay-gpn": "~1.0.0"
     }
 }
 ```
