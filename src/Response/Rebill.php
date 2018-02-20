@@ -1,10 +1,5 @@
 <?php
 /**
- * User: Rolando Toledo
- * Email: rtf@gpndata.com
- * Date: 4/5/17
- * Time: 2:11 PM
- *
  * Copyright 2018 The GPN Authors. All rights reserved.
  * Use of this source code is governed by a MIT
  * license that can be found in the LICENSE file.

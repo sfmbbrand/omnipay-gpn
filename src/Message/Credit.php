@@ -1,10 +1,5 @@
 <?php
 /**
- * User: Rolando Toledo
- * Email: rtf@gpndata.com
- * Date: 10/13/15
- * Time: 1:16 PM
- *
  * Copyright 2018 The GPN Authors. All rights reserved.
  * Use of this source code is governed by a MIT
  * license that can be found in the LICENSE file.
@@ -36,7 +31,7 @@ class Credit extends PurchaseAuthorize {
 	 * @return \SimpleXMLElement
 	 */
 	public function getBillingData() {
-		$data = $this->getBaseData();
+		$data        = $this->getBaseData();
 		$transaction = $data->addChild('transaction');
 		$transaction->addChild('amount', $this->getAmount());
 		// A custom field can be used to pass over the merchant site transaction ID.
@@ -44,7 +39,7 @@ class Credit extends PurchaseAuthorize {
 		$data->addChild('previoustransactionid', $this->getPTID());
 		$transaction->addChild('curcode', $this->getCurrency());
 		$transaction->addChild('description', $this->getDescription());
-		$customer   = $data->addChild('customer');
+		$customer = $data->addChild('customer');
 		if ($fn = $this->getFirstname()) {
 			$customer->addChild('firstname', $fn);
 		}
