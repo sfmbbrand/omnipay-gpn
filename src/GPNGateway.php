@@ -8,6 +8,7 @@
 namespace Omnipay\GPNDataEurope;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\GPNDataEurope\Message\Cancel;
 use Omnipay\GPNDataEurope\Message\Credit;
 use Omnipay\GPNDataEurope\Message\Capture;
 use Omnipay\GPNDataEurope\Message\Complete;
@@ -64,6 +65,16 @@ class GPNGateway extends AbstractGateway {
 	 */
 	public function capture(array $parameters = []) {
 		return $this->createRequest(Capture::class, $parameters);
+	}
+
+	/**
+	 * Cancel cancels a authorize transaction
+	 *
+	 * @param array $parameters
+	 * @return void
+	 */
+	public function cancel(array $parameters = []) {
+		return $this->createRequest(Cancel::class, $parameters);
 	}
 
 	/**
@@ -252,6 +263,16 @@ class GPNGateway extends AbstractGateway {
 	 */
 	public function refund(array $parameters = []) {
 		return $this->createRequest('Omnipay\GPNDataEurope\Message\RefundRequest', $parameters);
+	}
+
+	/**
+	 * cancel cancels a auth transaction
+	 *
+	 * @param array $parameters
+	 * @return void
+	 */
+	public function cancel(array $parameters = []) {
+		return $this->createRequest('Omnipay\GPNDataEurope\Message\Cancel', $parameters);
 	}
 
 	/**

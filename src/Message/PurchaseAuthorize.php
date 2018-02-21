@@ -36,7 +36,7 @@ class PurchaseAuthorize extends AbstractRequest {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 700;
+		$this->cmd = 700;
 	}
 
 	/**
@@ -113,7 +113,7 @@ class PurchaseAuthorize extends AbstractRequest {
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) (($this->getAction()) ?: $this->action) . (string) $this->getTransactionId() .
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getTransactionId() .
 			(string) $this->getAmount() . $this->getCurrency() . $this->getCard()->getNumber() . $this->getCard()->getCvv() . $this->getCard()->getName() .
 			$this->getApiKey());
 	}
@@ -600,7 +600,7 @@ class PurchaseAuthorize extends AbstractRequest {
 
 		$data->addChild('apiUser', $this->getApiUser());
 		$data->addChild('apiPassword', $this->getApiPassword());
-		$data->addChild('apiCmd', (($this->getAction()) ?: $this->action) * 1);
+		$data->addChild('apiCmd', $this->cmd);
 		$data->addChild('checksum', $this->getCheckSum());
 
 		return $data;

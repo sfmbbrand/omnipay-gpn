@@ -24,7 +24,7 @@ class Credit extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 720;
+		$this->cmd = 720;
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Credit extends PurchaseAuthorize {
 		return sha1(
 			$this->getApiUser() .
 			$this->getApiPassword() .
-			(string) $this->action .
+			(string) $this->cmd .
 			(string) $this->getTransactionId() .
 			(string) $this->getAmount() .
 			$this->getCurrency() .

@@ -24,7 +24,7 @@ class Complete extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 705;
+		$this->cmd = 705;
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Complete extends PurchaseAuthorize {
 		return sha1(
 			$this->getApiUser() .
 			$this->getApiPassword() .
-			(string) $this->action .
+			(string) $this->cmd .
 			$this->getAuthorizeType() .
 			$this->getAuthorizeMD() .
 			$this->getApiKey()

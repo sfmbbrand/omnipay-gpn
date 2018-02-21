@@ -24,7 +24,7 @@ class PaymentPage extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 710;
+		$this->cmd = 710;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class PaymentPage extends PurchaseAuthorize {
 	public function getCheckSum() {
 		return sha1($this->getApiUser() .
 			$this->getApiPassword() .
-			(string) $this->action .
+			(string) $this->cmd .
 			$this->getMerchantTransactionId() .
 			(string) $this->getAmount() .
 			$this->getCurrency() .
@@ -295,7 +295,7 @@ class PaymentPage extends PurchaseAuthorize {
 
 		$data->addChild('apiUser', $this->getApiUser());
 		$data->addChild('apiPassword', $this->getApiPassword());
-		$data->addChild('apiCmd', (($this->getAction()) ?: $this->action) * 1);
+		$data->addChild('apiCmd', $this->cmd);
 
 		return $data;
 	}

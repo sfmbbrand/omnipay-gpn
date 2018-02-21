@@ -7,7 +7,7 @@
 
 namespace Omnipay\GPNDataEurope\Message;
 
-use Guzzle\Http\ClientInterface;
+use Omnipay\Common\Http\Client;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,16 +22,16 @@ class UpdateRebill extends PurchaseAuthorize {
 	 * @param \Guzzle\Http\ClientInterface              $httpClient
 	 * @param \Symfony\Component\HttpFoundation\Request $httpRequest
 	 */
-	public function __construct(ClientInterface $httpClient, Request $httpRequest) {
+	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 755;
+		$this->cmd = 755;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->action . (string) $this->getTransactionId() . (string) $this->getGatewayTransactionId() . $this->getApiKey());
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getTransactionId() . (string) $this->getGatewayTransactionId() . $this->getApiKey());
 	}
 
 	/**
@@ -42,6 +42,7 @@ class UpdateRebill extends PurchaseAuthorize {
 
 		$data->addChild('merchanttransid', $this->getTransactionId());
 		$data->addChild('gatetransid', $this->getGatewayTransactionId());
+		$data->addChild('action', $this->getAction());
 
 		if (!is_null($this->getAmount())) {
 			$data->addChild('amount', $this->getAmount());
@@ -62,5 +63,19 @@ class UpdateRebill extends PurchaseAuthorize {
 	 */
 	public function setGatewayTransactionId($gatewayTransactionId) {
 		$this->setParameter('gatewayTransactionId', $gatewayTransactionId);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAction() {
+		return $this->getParameter('action');
+	}
+
+	/**
+	 * @param string $action
+	 */
+	public function setAction($action) {
+		$this->setParameter('action', $action);
 	}
 }

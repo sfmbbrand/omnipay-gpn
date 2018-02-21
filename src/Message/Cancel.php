@@ -24,14 +24,14 @@ class Cancel extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 702;
+		$this->cmd = 702;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->action . (string) $this->getGatewayTransactionId() . $this->getApiKey());
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getGatewayTransactionId() . $this->getApiKey());
 	}
 
 	/**

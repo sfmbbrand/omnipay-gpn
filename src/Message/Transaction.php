@@ -24,14 +24,14 @@ class Transaction extends PurchaseAuthorize {
 	 */
 	public function __construct(\Guzzle\Http\ClientInterface $httpClient, \Symfony\Component\HttpFoundation\Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 708;
+		$this->cmd = 708;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->action . (string) $this->getGatewayTransactionId() . (string) $this->getMerchantTransactionId() . $this->getApiKey());
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getGatewayTransactionId() . (string) $this->getMerchantTransactionId() . $this->getApiKey());
 	}
 
 	/**

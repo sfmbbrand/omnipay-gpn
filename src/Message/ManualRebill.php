@@ -24,14 +24,14 @@ class ManualRebill extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 756;
+		$this->cmd = 756;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->action . (string) $this->getGatewayTransactionId() . (string) $this->getTransactionId() . $this->getApiKey());
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getGatewayTransactionId() . (string) $this->getTransactionId() . $this->getApiKey());
 	}
 
 	/**

@@ -67,9 +67,20 @@ class Response extends AbstractResponse {
 			->setPaReq((string) ($data->parameters->PaReq ?: null))
 			->setMd((string) ($data->parameters->MD ?: null))
 			->setTermUrl((string) ($data->parameters->TermUrl ?: null));
+		$windows = null;
+		if (isset($data->rebillwindows->window)) {
+			$windows = [];
+			foreach ($data->rebillwindows->window as $el) {
+				$windows[] = [
+					'from' => (string) $el['from'],
+					'to'   => (string) $el['to'],
+					'type' => (string) $el['type'],
+				];
+			}
+		}
 		$rebill
 			->setSecret((string) ($data->rebillsecret ?: null))
-			->setWindow((string) $data->rebillwindows ?: null);
+			->setWindow($windows);
 		$this->data
 			->setIsSuccess(
 				self::SUCCESS == $data->result ||

@@ -24,14 +24,14 @@ class RefundRequest extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 760;
+		$this->cmd = 760;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->action . (string) $this->getGatewayTransactionId() . (string) $this->getAmount() . $this->getApiKey());
+		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getGatewayTransactionId() . (string) $this->getAmount() . $this->getApiKey());
 	}
 
 	/**

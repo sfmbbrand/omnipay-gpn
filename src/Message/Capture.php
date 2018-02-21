@@ -24,7 +24,7 @@ class Capture extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->action = 701;
+		$this->cmd = 701;
 	}
 
 	/**
@@ -41,7 +41,7 @@ class Capture extends PurchaseAuthorize {
 		return sha1(
 			$this->getApiUser() .
 			$this->getApiPassword() .
-			(string) (($this->getAction()) ?: $this->action) .
+			(string) $this->cmd .
 			(string) $this->getGateTransId() .
 			$this->getApiKey()
 		);
