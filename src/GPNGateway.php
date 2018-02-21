@@ -266,16 +266,6 @@ class GPNGateway extends AbstractGateway {
 	}
 
 	/**
-	 * cancel cancels a auth transaction
-	 *
-	 * @param array $parameters
-	 * @return void
-	 */
-	public function cancel(array $parameters = []) {
-		return $this->createRequest('Omnipay\GPNDataEurope\Message\Cancel', $parameters);
-	}
-
-	/**
 	 * Get refund notification message to send refund notification to the gateway
 	 *
 	 * @param array $parameters
