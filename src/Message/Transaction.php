@@ -7,7 +7,7 @@
 
 namespace Omnipay\GPNDataEurope\Message;
 
-use Guzzle\Http\ClientInterface;
+use Omnipay\Common\Http\Client;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,7 +22,7 @@ class Transaction extends PurchaseAuthorize {
 	 * @param \Guzzle\Http\ClientInterface              $httpClient
 	 * @param \Symfony\Component\HttpFoundation\Request $httpRequest
 	 */
-	public function __construct(\Guzzle\Http\ClientInterface $httpClient, \Symfony\Component\HttpFoundation\Request $httpRequest) {
+	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
 		$this->cmd = 708;
 	}
