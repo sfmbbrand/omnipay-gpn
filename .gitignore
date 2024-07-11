@@ -34,9 +34,4 @@
 # Build data
 /build/
 
-# Composer PHAR
-/composer.phar
-
-# Created by .ignore support plugin (hsz.mobi)
 .idea/
-composer.lock

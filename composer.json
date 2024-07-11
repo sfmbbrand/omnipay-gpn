@@ -28,11 +28,12 @@
         "psr-4": { "Omnipay\\GPNDataEurope\\" : "src/" }
     },
     "require": {
-        "omnipay/common": "v3.0-alpha.1",
-        "php-http/guzzle6-adapter":"1.1.1"
+        "omnipay/common": "^v3.3.0",
+        "symfony/http-client": "^7.1.2"
     },
     "require-dev": {
-        "omnipay/tests": "~2.1.0"
+        "omnipay/tests": "^4.1.2",
+        "http-interop/http-factory-guzzle": "^1.2.0"
     },
     "extra": {
         "branch-alias": {
@@ -40,5 +41,10 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }
