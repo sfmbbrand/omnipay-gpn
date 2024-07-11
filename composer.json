@@ -1,5 +1,5 @@
 {
-    "name": "gpndata/omnipay-gpn",
+    "name": "jjtortosa/omnipay-gpn",
     "type": "library",
     "description": "GPN SDK library",
     "keywords": [
@@ -12,7 +12,7 @@
         "payment",
         "twocheckout"
     ],
-    "homepage": "https://github.com/gpndata/omnipay-gpn",
+    "homepage": "https://github.com/jjtortosa/omnipay-gpn",
     "license": "MIT",
     "authors": [
         {
