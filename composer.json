@@ -29,7 +29,8 @@
     },
     "require": {
         "omnipay/common": "^v3.3.0",
-        "symfony/http-client": "^7.1.2"
+        "symfony/http-client": "^7.1.2",
+        "php-http/guzzle6-adapter": "^2.0.2"
     },
     "require-dev": {
         "omnipay/tests": "^4.1.2",
