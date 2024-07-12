@@ -7,8 +7,11 @@
 
 namespace Omnipay\GPNDataEurope\Message;
 
+use Exception;
+use Omnipay\Common\Exception\InvalidRequestException;
 use Omnipay\Common\Http\Client;
-use Thapp\XmlBuilder\Dom\SimpleXMLElement;
+use Omnipay\Common\Message\ResponseInterface;
+use SimpleXMLElement;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaymentPage extends PurchaseAuthorize {
@@ -19,44 +22,40 @@ class PaymentPage extends PurchaseAuthorize {
 	/**
 	 * PaymentPage constructor.
 	 *
-	 * @param \Omnipay\Common\Http\Client              $httpClient
-	 * @param \Symfony\Component\HttpFoundation\Request $httpRequest
+	 * @param Client $httpClient
+	 * @param Request $httpRequest
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
 		$this->cmd = 710;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getAddress1() {
+    public function getAddress1(): string
+    {
 		return $this->getParameter('address1');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getAddress2() {
+    public function getAddress2(): string
+    {
 		return $this->getParameter('address2');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getAuth() {
+    public function getAuth(): string
+    {
 		return $this->getParameter('auth');
 	}
 
 	/**
 	 * @return string
-	 */
-	public function getCheckSum() {
+     * @throws InvalidRequestException
+     */
+	public function getCheckSum(): string
+    {
 		return sha1($this->getApiUser() .
 			$this->getApiPassword() .
-			(string) $this->cmd .
+            $this->cmd .
 			$this->getMerchantTransactionId() .
-			(string) $this->getAmount() .
+            $this->getAmount() .
 			$this->getCurrency() .
 			$this->getApiKey()
 		);
@@ -139,66 +138,50 @@ class PaymentPage extends PurchaseAuthorize {
 		return $this->getParameter('state');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getStatement() {
+    public function getStatement(): string
+    {
 		return $this->getParameter('statement');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getZip() {
+    public function getZip(): string
+    {
 		return $this->getParameter('zip');
 	}
 
-	/**
-	 * Send the request with specified data
-	 *
-	 * @param  mixed $data The data to send
-	 *
-	 * @return \Omnipay\Common\Message\ResponseInterface
-	 */
-	public function sendData($data) {
+    /**
+     * Send the request with specified data
+     *
+     * @param mixed $data The data to send
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     */
+	public function sendData($data): Response
+    {
 		$headers               = ['Content-Type' => 'application/x-www-form-urlencoded'];
-		$httpResponse          = $this->httpClient->post($this->getPPAGE(), $headers, ['strrequest' => $data->asXML()]);
-		$content               = new \SimpleXMLElement($httpResponse->getBody()->getContents());
+		$httpResponse          = $this->httpClient->request('POST', $this->getPPAGE(), $headers, ['strrequest' => $data->asXML()]);
+		$content               = new SimpleXMLElement($httpResponse->getBody()->getContents());
 		return $this->response = new Response($this, $content);
 	}
 
-	/**
-	 * @param string $address1
-	 */
-	public function setAddress1($address1) {
+    public function setAddress1(string $address1): void
+    {
 		$this->setParameter('address1', $address1);
 	}
 
-	/**
-	 * @param string $address2
-	 */
-	public function setAddress2($address2) {
+    public function setAddress2(string $address2) {
 		$this->setParameter('address2', $address2);
 	}
 
-	/**
-	 * @param string $auth
-	 */
-	public function setAuth($auth) {
+    public function setAuth(string $auth) {
 		$this->setParameter('auth', $auth);
 	}
 
-	/**
-	 * @param string $city
-	 */
-	public function setCity($city) {
+    public function setCity(string $city) {
 		$this->setParameter('city', $city);
 	}
 
-	/**
-	 * @param string $contactUrl
-	 */
-	public function setContactUrl($contactUrl) {
+    public function setContactUrl(string $contactUrl) {
 		$this->setParameter('contact_url', $contactUrl);
 	}
 
@@ -265,25 +248,22 @@ class PaymentPage extends PurchaseAuthorize {
 		$this->setParameter('state', $state);
 	}
 
-	/**
-	 * @param string $statement
-	 */
-	public function setStatement($statement) {
+    public function setStatement(string $statement): void
+    {
 		$this->setStatement('statement', $statement);
 	}
 
-	/**
-	 * @param string $zip
-	 */
-	public function setZip($zip) {
+    public function setZip(string $zip): void
+    {
 		$this->setParameter('zip', $zip);
 	}
 
 	/**
-	 * @return \SimpleXMLElement
+	 * @return SimpleXMLElement
 	 */
-	protected function getBaseData() {
-		$data = new \SimpleXMLElement('<transaction/>');
+	protected function getBaseData(): SimpleXMLElement
+    {
+		$data = new SimpleXMLElement('<transaction/>');
 
 		if ($this->getFrom()) {
 			if ($this->getFrom() === 'paymentpage') {
@@ -301,10 +281,11 @@ class PaymentPage extends PurchaseAuthorize {
 	}
 
 	/**
-	 * @return \SimpleXMLElement
-	 * @throws \Omnipay\Common\Exception\InvalidRequestException
+	 * @return SimpleXMLElement
+	 * @throws InvalidRequestException
 	 */
-	protected function getBillingData() {
+	protected function getBillingData(): SimpleXMLElement
+    {
 		$data = $this->getBaseData();
 		$data->addChild('customerreturn', $this->getCustomerReturn());
 		$data->addChild('contacturl', $this->getContactUrl());

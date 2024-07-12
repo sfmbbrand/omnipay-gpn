@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUnused */
+
 /**
  * Copyright 2018 The GPN Authors. All rights reserved.
  * Use of this source code is governed by a MIT
@@ -8,120 +9,119 @@
 
 namespace Omnipay\GPNDataEurope\Message;
 
+use Exception;
+use Omnipay\Common\Exception\InvalidRequestException;
+use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Http\Client;
 use Omnipay\Common\Message\AbstractRequest;
+use SimpleXMLElement;
 use Symfony\Component\HttpFoundation\Request;
 
 class PurchaseAuthorize extends AbstractRequest {
+
 	const DEV_MODE = 'DEV';
-
 	const PROD_MODE = 'PROD';
-
 	const TEST_MODE = 'TEST';
-
 	const TEST_URL = 'https://txtest.txpmnts.com/api/transaction/';
-
 	const TRANSACTION_ID_PARAM = 'merchanttransid';
 
-	/**
-	 * @var int
-	 */
-	protected $action;
+    public int $cmd = 700;
+	protected int $action;
 
 	/**
 	 * PurchaseAuthorize constructor.
 	 *
-	 * @param Omnipay\Common\Http\Client              $httpClient
-	 * @param \Symfony\Component\HttpFoundation\Request $httpRequest
+	 * @param Client $httpClient
+	 * @param Request $httpRequest
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->cmd = 700;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getAccountId() {
+	public function getAccountId(): string
+    {
 		return $this->getParameter('accountId');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getAction() {
+	public function getAction(): string
+    {
 		return $this->getParameter('action');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getApiKey() {
+	public function getApiKey(): string
+    {
 		return $this->getParameter('apiKey');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getApiPassword() {
+	public function getApiPassword(): string
+    {
 		return $this->getParameter('apiPassword');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getApiUser() {
+	public function getApiUser(): string
+    {
 		return $this->getParameter('apiUser');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getAuthSid() {
+	public function getAuthSid(): ?string
+    {
 		return $this->getParameter('authSid');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getAuthType() {
+	public function getAuthType(): string
+    {
 		return $this->getParameter('authType') ?: 'Direct';
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getBirthDay() {
+	public function getBirthDay(): string
+    {
 		return $this->getParameter('birthday');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getBirthMonth() {
+	public function getBirthMonth(): string
+    {
 		return $this->getParameter('birthMonth');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getBirthYear() {
+	public function getBirthYear(): string
+    {
 		return $this->getParameter('birthYear');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getCheckSum() {
-		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getTransactionId() .
-			(string) $this->getAmount() . $this->getCurrency() . $this->getCard()->getNumber() . $this->getCard()->getCvv() . $this->getCard()->getName() .
+    /**
+     * @return string
+     * @throws InvalidRequestException
+     */
+	public function getCheckSum(): string
+    {
+		return sha1($this->getApiUser() . $this->getApiPassword() . $this->cmd . $this->getTransactionId() .
+            $this->getAmount() . $this->getCurrency() . $this->getCard()->getNumber() . $this->getCard()->getCvv() . $this->getCard()->getName() .
 			$this->getApiKey());
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getDEV() {
+	public function getDEV(): string
+    {
 		return $this->getParameter('DEV');
 	}
 
@@ -129,470 +129,369 @@ class PurchaseAuthorize extends AbstractRequest {
 	 * Get the raw data array for this message. The format of this varies from gateway to
 	 * gateway, but will usually be either an associative array, or a SimpleXMLElement.
 	 *
-	 * @return \SimpleXMLElement
-	 * @throws \Omnipay\Common\Exception\InvalidRequestException
+	 * @return SimpleXMLElement
+	 * @throws InvalidRequestException
 	 */
-	public function getData() {
+	public function getData(): SimpleXMLElement
+    {
 		return $this->getBillingData();
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getEmail() {
+	public function getEmail(): string
+    {
 		return $this->getParameter('email');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getFilterValue() {
+	public function getFilterValue(): string
+    {
 		return $this->getParameter('filterValue');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getFirstname() {
+	public function getFirstname(): string
+    {
 		return $this->getParameter('firstname');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getFrom() {
+	public function getFrom(): ?string
+    {
 		return $this->getParameter('from');
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getGracePeriod() {
+	public function getGracePeriod(): int
+    {
 		return $this->getParameter('gracePeriod');
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getInstallmentCount() {
+	public function getInstallmentCount(): ?int
+    {
 		return $this->getParameter('installmentCount');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getLastname() {
+	public function getLastname(): string
+    {
 		return $this->getParameter('lastname');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMerchantSpecification1() {
+	public function getMerchantSpecification1(): ?string
+    {
 		return $this->getParameter('merchantSpecification1');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMerchantSpecification2() {
+	public function getMerchantSpecification2(): ?string
+    {
 		return $this->getParameter('merchantSpecification2');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMerchantSpecification3() {
+	public function getMerchantSpecification3(): ?string
+    {
 		return $this->getParameter('merchantSpecification3');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMerchantSpecification4() {
+	public function getMerchantSpecification4(): ?string
+    {
 		return $this->getParameter('merchantSpecification4');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getMerchantSpecification5() {
+	public function getMerchantSpecification5(): ?string
+    {
 		return $this->getParameter('merchantSpecification5');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getMode() {
+	public function getMode(): string
+    {
 		return $this->getParameter('mode');
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getPROD() {
+	public function getPROD(): string
+    {
 		return $this->getParameter('PROD');
 	}
 
-	/**
-	 * @return float
-	 */
-	public function getRebillAmount() {
+	public function getRebillAmount(): float
+    {
 		return $this->getParameter('rebillAmount');
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getRebillCount() {
+	public function getRebillCount(): int
+    {
 		return $this->getParameter('rebillCount');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRebillDescription() {
+	public function getRebillDescription(): string
+    {
 		return $this->getParameter('rebillDescription');
 	}
 
-	/**
-	 * @return float
-	 */
-	public function getRebillFollowupAmount() {
+	public function getRebillFollowupAmount(): float|string|null
+    {
 		return $this->getParameter('rebillFollowupAmount');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRebillFollowupTime() {
+	public function getRebillFollowupTime(): string
+    {
 		return $this->getParameter('rebillFollowupTime');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRebillFrequency() {
+	public function getRebillFrequency(): ?string
+    {
 		return $this->getParameter('rebillFrequency');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getRebillStart() {
+	public function getRebillStart(): string
+    {
 		return $this->getParameter('rebillStart');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getSessionId() {
+	public function getSessionId(): ?string
+    {
 		return $this->getParameter('sessionId');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getStatement() {
+	public function getStatement(): string
+    {
 		return $this->getParameter('statement');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getTEST() {
+	public function getTEST(): string
+    {
 		return $this->getParameter('TEST');
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getURL() {
+	public function getURL(): string
+    {
 		return $this->getParameter($this->getMode());
 	}
 
-	/**
-	 * @return string
-	 */
-	public function isRebill() {
+	public function isRebill(): string
+    {
 		return $this->getParameter('rebill');
 	}
 
-	/**
-	 * Send the request with specified data
-	 *
-	 * @param  mixed $data The data to send
-	 *
-	 * @return \Omnipay\Common\Message\ResponseInterface
-	 */
-	public function sendData($data) {
+    /**
+     * Send the request with specified data
+     *
+     * @param mixed $data The data to send
+     *
+     * @return Response
+     * @throws InvalidResponseException
+     * @throws Exception
+     */
+	public function sendData($data): Response
+    {
 		$headers               = ['Content-Type' => 'application/xml; charset=utf-8'];
-		$httpResponse          = $this->httpClient->post($this->getURL(), $headers, $data->asXML());
-		$content               = new \SimpleXMLElement($httpResponse->getBody()->getContents());
+		$httpResponse          = $this->httpClient->request('POST', $this->getURL(), $headers, $data->asXML());
+		$content               = new SimpleXMLElement($httpResponse->getBody()->getContents());
+        
 		return $this->response = new Response($this, $content);
 	}
 
-	/**
-	 * @param string $accountId
-	 */
-	public function setAccountId($accountId) {
+	public function setAccountId(string $accountId): void
+    {
 		$this->setParameter('accountId', $accountId);
 	}
 
-	/**
-	 * @param $action
-	 */
-	public function setAction($action) {
+    public function setAction($action): void
+    {
 		$this->setParameter('action', intval($action));
 	}
 
-	/**
-	 * @param string $apiKey
-	 */
-	public function setApiKey($apiKey) {
+    public function setApiKey(string $apiKey): void
+    {
 		$this->setParameter('apiKey', $apiKey);
 	}
 
-	/**
-	 * @param string $apiPassword
-	 */
-	public function setApiPassword($apiPassword) {
+	public function setApiPassword(string $apiPassword): void
+    {
 		$this->setParameter('apiPassword', $apiPassword);
 	}
 
-	/**
-	 * @param string $apiUser
-	 */
-	public function setApiUser($apiUser) {
+    public function setApiUser(string $apiUser): void
+    {
 		$this->setParameter('apiUser', $apiUser);
 	}
 
-	/**
-	 * @param string $authSid
-	 */
-	public function setAuthSid($authSid) {
+	public function setAuthSid(string $authSid): void
+    {
 		$this->setParameter('authSid', $authSid);
 	}
 
-	/**
-	 * @param string $authType
-	 */
-	public function setAuthType($authType = 'Direct') {
+    public function setAuthType(string $authType = 'Direct'): void
+    {
 		$this->setParameter('authType', $authType);
 	}
 
-	/**
-	 * @param string $birthday
-	 */
-	public function setBirthDay($birthday) {
+	public function setBirthDay(string $birthday): void
+    {
 		$this->setParameter('birthday', $birthday);
 	}
 
-	/**
-	 * @param string $birthMonth
-	 */
-	public function setBirthMonth($birthMonth) {
+	public function setBirthMonth(string $birthMonth): void
+    {
 		$this->setParameter('birthMonth', $birthMonth);
 	}
 
-	/**
-	 * @param string $birthYear
-	 */
-	public function setBirthYear($birthYear) {
+	public function setBirthYear(string $birthYear): void
+    {
 		$this->setParameter('birthYear', $birthYear);
 	}
 
-	/**
-	 * @param string $url
-	 */
-	public function setDEV($url = self::TEST_URL) {
+	public function setDEV(string $url = self::TEST_URL): void
+    {
 		$this->setParameter(static::DEV_MODE, $url);
 	}
 
-	/**
-	 * @param string $email
-	 */
-	public function setEmail($email) {
+	public function setEmail(string $email): void
+    {
 		$this->setParameter('email', $email);
 	}
 
-	/**
-	 * @param string $value
-	 */
-	public function setFilterValue($value) {
+	public function setFilterValue(string $value): void
+    {
 		$this->setParameter('filterValue', $value);
 	}
 
-	/**
-	 * @param string $firstname
-	 */
-	public function setFirstname($firstname) {
+	public function setFirstname(string $firstname): void
+    {
 		$this->setParameter('firstname', $firstname);
 	}
 
-	/**
-	 * @param string $from
-	 */
-	public function setFrom($from) {
+	public function setFrom(string $from): void
+    {
 		$this->setParameter('from', $from);
 	}
 
-	/**
-	 * @param int $value
-	 */
-	public function setGracePeriod($value) {
+    public function setGracePeriod(int $value): void
+    {
 		$this->setParameter('gracePeriod', $value);
 	}
 
-	/**
-	 * @param int $count
-	 */
-	public function setInstallmentCount($count) {
+    public function setInstallmentCount(int $count): void
+    {
 		$this->setParameter('installmentCount', $count);
 	}
 
-	/**
-	 * @param string $lastname
-	 */
-	public function setLastname($lastname) {
+	public function setLastname(string $lastname): void
+    {
 		$this->setParameter('lastname', $lastname);
 	}
 
-	/**
-	 * @param string $merchantSpecification1
-	 */
-	public function setMerchantSpecification1($merchantSpecification1) {
+	public function setMerchantSpecification1(string $merchantSpecification1): void
+    {
 		$this->setParameter('merchantSpecification1', $merchantSpecification1);
 	}
 
-	/**
-	 * @param string $merchantSpecification2
-	 */
-	public function setMerchantSpecification2($merchantSpecification2) {
+	public function setMerchantSpecification2(string $merchantSpecification2): void
+    {
 		$this->setParameter('merchantSpecification2', $merchantSpecification2);
 	}
 
-	/**
-	 * @param string $merchantSpecification3
-	 */
-	public function setMerchantSpecification3($merchantSpecification3) {
+    public function setMerchantSpecification3(string $merchantSpecification3): void
+    {
 		$this->setParameter('merchantSpecification3', $merchantSpecification3);
 	}
 
-	/**
-	 * @param string $merchantSpecification4
-	 */
-	public function setMerchantSpecification4($merchantSpecification4) {
+    public function setMerchantSpecification4(string $merchantSpecification4): void
+    {
 		$this->setParameter('merchantSpecification4', $merchantSpecification4);
 	}
 
-	/**
-	 * @param string $merchantSpecification5
-	 */
-	public function setMerchantSpecification5($merchantSpecification5) {
+    public function setMerchantSpecification5(string $merchantSpecification5): void
+    {
 		$this->setParameter('merchantSpecification5', $merchantSpecification5);
 	}
 
-	/**
-	 * @param string $mode
-	 */
-	public function setMode($mode) {
+    public function setMode(string $mode): void
+    {
 		$this->setParameter('mode', $mode);
 	}
 
-	/**
-	 * @param string $url
-	 */
-	public function setPROD($url = self::TEST_URL) {
+    public function setPROD(string $url = self::TEST_URL): void
+    {
 		$this->setParameter(static::PROD_MODE, $url);
 	}
 
-	/**
-	 * @param string $rebill
-	 */
-	public function setRebill($rebill) {
+    public function setRebill(string $rebill): void
+    {
 		$this->setParameter('rebill', $rebill);
 	}
 
-	/**
-	 * @param float $rebillAmount
-	 */
-	public function setRebillAmount($rebillAmount) {
+	public function setRebillAmount(float $rebillAmount): void
+    {
 		$this->setParameter('rebillAmount', $rebillAmount);
 	}
 
-	/**
-	 * @param int $rebillCount
-	 */
-	public function setRebillCount($rebillCount) {
+    public function setRebillCount(int $rebillCount): void
+    {
 		$this->setParameter('rebillCount', $rebillCount);
 	}
 
-	/**
-	 * @param string $rebillDescription
-	 */
-	public function setRebillDescription($rebillDescription) {
+    public function setRebillDescription(string $rebillDescription): void
+    {
 		$this->setParameter('rebillDescription', $rebillDescription);
 	}
 
-	/**
-	 * @param float $rebillFollowupAmount
-	 */
-	public function setRebillFollowupAmount($rebillFollowupAmount) {
+	public function setRebillFollowupAmount(string $rebillFollowupAmount): void
+    {
 		$this->setParameter('rebillFollowupAmount', $rebillFollowupAmount);
 	}
 
-	/**
-	 * @param string $rebillFollowupTime
-	 */
-	public function setRebillFollowupTime($rebillFollowupTime) {
+	public function setRebillFollowupTime(string $rebillFollowupTime): void
+    {
 		$this->setParameter('rebillFollowupTime', $rebillFollowupTime);
 	}
 
-	/**
-	 * @param string $rebillFrequency
-	 */
-	public function setRebillFrecuency($rebillFrequency) {
+	public function setRebillFrecuency(string $rebillFrequency): void
+    {
 		$this->setParameter('rebillFrequency', $rebillFrequency);
 	}
 
-	/**
-	 * @param string $rebillStart
-	 */
-	public function setRebillStart($rebillStart) {
+	public function setRebillStart(string $rebillStart): void
+    {
 		$this->setParameter('rebillStart', $rebillStart);
 	}
 
-	/**
-	 * @param string $sessionId
-	 */
-	public function setSessionId($sessionId) {
+
+	public function setSessionId(string $sessionId): void
+    {
 		$this->setParameter('sessionId', $sessionId);
 	}
 
-	/**
-	 * @param string $statement
-	 */
-	public function setStatement($statement) {
+	public function setStatement(string $statement): void
+    {
 		$this->setParameter('statement', $statement);
 	}
 
-	/**
-	 * @param string $url
-	 */
-	public function setTEST($url = self::TEST_URL) {
+	public function setTEST(string $url = self::TEST_URL): void
+    {
 		$this->setParameter(static::TEST_MODE, $url);
 	}
 
-	/**
-	 * @return \SimpleXMLElement
-	 */
-	protected function getBaseData() {
-		$data = new \SimpleXMLElement('<transaction/>');
+    /**
+     * @return SimpleXMLElement
+     * @throws InvalidRequestException
+     */
+	protected function getBaseData(): SimpleXMLElement
+    {
+		$data = new SimpleXMLElement('<transaction/>');
 
 		if ($this->getFrom()) {
 			if ($this->getFrom() === 'paymentpage') {
-				$data = new \SimpleXMLElement('<request/>');
+				$data = new SimpleXMLElement('<request/>');
 			}
 
 			$data->addAttribute('from', $this->getFrom());
@@ -607,10 +506,11 @@ class PurchaseAuthorize extends AbstractRequest {
 	}
 
 	/**
-	 * @return \SimpleXMLElement
-	 * @throws \Omnipay\Common\Exception\InvalidRequestException
+	 * @return SimpleXMLElement
+	 * @throws InvalidRequestException
 	 */
-	protected function getBillingData() {
+	protected function getBillingData(): SimpleXMLElement
+    {
 		$data        = $this->getBaseData();
 		$transaction = $data->addChild('transaction');
 		$transaction->addChild('amount', $this->getAmount());
