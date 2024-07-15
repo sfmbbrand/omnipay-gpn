@@ -29,13 +29,13 @@ class GPNGateway extends AbstractGateway {
 
 	const PPAGE_MODE = 'PPAGE';
 
-	const PPAGE_URL = 'https://ppt.txpmnts.com/payment-init';
+	const PPAGE_URL = 'https://api.convergegate.com/api/transaction/';
 
 	const PROD_MODE = 'PROD';
 
 	const TEST_MODE = 'TEST';
 
-	const TEST_URL = 'https://txtest.txpmnts.com/api/transaction/';
+	const TEST_URL = 'https://testdashboard.convergegate.com/api/transaction/';
 
 	/**
 	 * Get notification message to send notification to the gateway
