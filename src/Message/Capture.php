@@ -9,6 +9,7 @@ namespace Omnipay\GPNDataEurope\Message;
 
 use Omnipay\Common\Http\Client;
 use Symfony\Component\HttpFoundation\Request;
+use SimpleXMLElement;
 
 /**
  * Class Capture
@@ -37,7 +38,7 @@ class Capture extends PurchaseAuthorize {
 	/**
 	 * @return string
 	 */
-	public function getCheckSum() {
+	public function getCheckSum(): string {
 		return sha1(
 			$this->getApiUser() .
 			$this->getApiPassword() .
@@ -53,7 +54,7 @@ class Capture extends PurchaseAuthorize {
 	 *
 	 * @return \SimpleXMLElement
 	 */
-	public function getData() {
+	public function getData(): SimpleXMLElement {
 		$data = $this->getBaseData();
 		$data->addChild('gatetransid', $this->getGateTransId());
 

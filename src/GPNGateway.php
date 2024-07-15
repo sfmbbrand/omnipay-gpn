@@ -63,7 +63,7 @@ class GPNGateway extends AbstractGateway {
 	 * @param array $parameters
 	 * @return void
 	 */
-	public function capture(array $parameters = []) {
+	public function capture(array $parameters = []): Capture {
 		return $this->createRequest(Capture::class, $parameters);
 	}
 
