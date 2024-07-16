@@ -8,6 +8,7 @@
 namespace Omnipay\GPNDataEurope;
 
 use Omnipay\Common\AbstractGateway;
+use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\GPNDataEurope\Message\Cancel;
 use Omnipay\GPNDataEurope\Message\Credit;
 use Omnipay\GPNDataEurope\Message\Capture;
@@ -19,10 +20,10 @@ use Omnipay\GPNDataEurope\Message\Notification\DisputeNotification;
 
 /**
  *
- * @method \Omnipay\Common\Message\ResponseInterface void(array $options = [])
- * @method \Omnipay\Common\Message\ResponseInterface createCard(array $options = [])
- * @method \Omnipay\Common\Message\ResponseInterface updateCard(array $options = [])
- * @method \Omnipay\Common\Message\ResponseInterface deleteCard(array $options = [])
+ * @method ResponseInterface void(array $options = [])
+ * @method ResponseInterface createCard(array $options = [])
+ * @method ResponseInterface updateCard(array $options = [])
+ * @method ResponseInterface deleteCard(array $options = [])
  */
 class GPNGateway extends AbstractGateway {
 	const DEV_MODE = 'DEV';
@@ -358,13 +359,14 @@ class GPNGateway extends AbstractGateway {
 		$this->setParameter(static::TEST_MODE, $url);
 	}
 
-	/**
-	 * Get transaction status message to get status transaction to the gateway
-	 *
-	 * @param array $parameters
-	 * @return void
-	 */
-	public function transactionStatus(array $parameters = []) {
+    /**
+     * Get transaction status message to get status transaction to the gateway
+     *
+     * @param array $parameters
+     * @return Message\Transaction
+     */
+	public function transactionStatus(array $parameters = []): Message\Transaction
+    {
 		return $this->createRequest('Omnipay\GPNDataEurope\Message\Transaction', $parameters);
 	}
 

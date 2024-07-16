@@ -13,6 +13,17 @@ namespace Omnipay\GPNDataEurope\CreditCard;
  * @package Omnipay\GPNDataEurope\CreditCard
  */
 class CreditCard extends \Omnipay\Common\CreditCard {
+
+    // test jj & sergi 16-7-24
+    public function getReturnUrl() {
+        return $this->getParameters('returnurl');
+    }
+
+    public function setReturnUrl($return_url) {
+        $this->setParameter('returnurl', $return_url);
+    }
+    // end test
+
 	/**
 	 * @return array
 	 */

@@ -27,17 +27,13 @@ class Transaction extends PurchaseAuthorize {
 		$this->cmd = 708;
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getCheckSum() {
+	public function getCheckSum(): string
+    {
 		return sha1($this->getApiUser() . $this->getApiPassword() . (string) $this->cmd . (string) $this->getGatewayTransactionId() . (string) $this->getMerchantTransactionId() . $this->getApiKey());
 	}
 
-	/**
-	 * @return \SimpleXMLElement
-	 */
-	public function getData() {
+	public function getData(): \SimpleXMLElement
+    {
 		$data = $this->getBaseData();
 
 		if (!is_null($this->getGatewayTransactionId())) {
