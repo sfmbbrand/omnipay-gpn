@@ -158,7 +158,7 @@ class PurchaseAuthorize extends AbstractRequest
     /**
      * @return string
      */
-    public function getFirstname(): string
+    public function getFirstname(): ?string
     {
         return $this->getParameter('firstname');
     }
@@ -178,7 +178,7 @@ class PurchaseAuthorize extends AbstractRequest
         return $this->getParameter('installmentCount');
     }
 
-    public function getLastname(): string
+    public function getLastname(): ?string
     {
         return $this->getParameter('lastname');
     }
