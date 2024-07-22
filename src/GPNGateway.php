@@ -30,13 +30,13 @@ class GPNGateway extends AbstractGateway {
 
 	const PPAGE_MODE = 'PPAGE';
 
-	const PPAGE_URL = 'https://api.convergegate.com/api/transaction/';
+	const PPAGE_URL = 'https://api.convergegate.com/v1/transactions';
 
 	const PROD_MODE = 'PROD';
 
 	const TEST_MODE = 'TEST';
 
-	const TEST_URL = 'https://testdashboard.convergegate.com/api/transaction/';
+	const TEST_URL = 'https://testapi.convergegate.com/v1/transactions';
 
 	/**
 	 * Get notification message to send notification to the gateway
@@ -240,9 +240,9 @@ class GPNGateway extends AbstractGateway {
 	 * Get purchase request use to send direct to the gateway
 	 *
 	 * @param array $parameters
-	 * @return void
+	 * @return PurchaseAuthorize
 	 */
-	public function purchase(array $parameters = []) {
+	public function purchase(array $parameters = []): PurchaseAuthorize {
 		return $this->authorize($parameters);
 	}
 

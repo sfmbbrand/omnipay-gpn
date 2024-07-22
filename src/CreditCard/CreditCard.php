@@ -15,8 +15,9 @@ namespace Omnipay\GPNDataEurope\CreditCard;
 class CreditCard extends \Omnipay\Common\CreditCard {
 
     // test jj & sergi 16-7-24
+
     public function getReturnUrl() {
-        return $this->getParameters('returnurl');
+        return $this->getParameter('returnurl');
     }
 
     public function setReturnUrl($return_url) {
@@ -28,14 +29,14 @@ class CreditCard extends \Omnipay\Common\CreditCard {
 	 * @return array
 	 */
 	public function getIssueMonth() {
-		return $this->getParameters('issuemonth');
+		return $this->getParameter('issuemonth');
 	}
 
 	/**
 	 * @return array
 	 */
 	public function getIssueYear() {
-		return $this->getParameters('issueyear');
+		return $this->getParameter('issueyear');
 	}
 
 	/**

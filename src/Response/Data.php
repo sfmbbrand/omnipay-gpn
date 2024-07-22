@@ -73,6 +73,8 @@ class Data {
 	 */
 	private $transId;
 
+    private $transaction;
+
 	/**
 	 * Get transaction id in merchant side
 	 *
@@ -152,6 +154,14 @@ class Data {
 	public function getTransId() {
 		return $this->transId;
 	}
+
+    public function getTransaction() {
+        return $this->transaction;
+    }
+
+    public function setTransaction($transaction) {
+        return $this->transaction = $transaction;
+    }
 
 	/**
 	 * Get if the process was successful finished

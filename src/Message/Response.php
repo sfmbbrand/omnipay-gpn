@@ -19,227 +19,249 @@ use Omnipay\Common\Exception\InvalidResponseException;
  *
  * @package Omnipay\GPNDataEurope\Message
  */
-class Response extends AbstractResponse {
-	const AUTHORIZED = 'AUTHORIZED';
+class Response extends AbstractResponse
+{
+    const AUTHORIZED = 'AUTHORIZED';
 
-	const CANCELED = 'CANCELED';
+    const CANCELED = 'CANCELED';
 
-	const DECLINED = 'DECLINED';
+    const DECLINED = 'DECLINED';
 
-	const ERROR = 'ERROR';
+    const ERROR = 'ERROR';
 
-	const OK = 'OK';
+    const OK = 'OK';
 
-	const PENDING = 'PENDING';
+    const PENDING = 'PENDING';
 
-	const REQUEST_PENDING = 'RequestPending';
+    const REQUEST_PENDING = 'RequestPending';
 
-	const SUCCESS = 'SUCCESS';
+    const SUCCESS = 'SUCCESS';
 
-	/**
-	 * Api700Response constructor.
-	 *
-	 * @param RequestInterface $request
-	 * @param mixed $data
-	 */
-	public function __construct(RequestInterface $request, $data) {
-		$this->request = $request;
-		$this->data    = new Data();
+    /**
+     * Api700Response constructor.
+     *
+     * @param RequestInterface $request
+     * @param mixed $data
+     */
+    public function __construct(RequestInterface $request, $data)
+    {
+        $this->request = $request;
+        $this->xmlData = $data;
+        $this->data = new Data();
 
-		if (!$data instanceof \SimpleXMLElement) {
-			throw new InvalidResponseException();
-		}
+        if (!$data instanceof \SimpleXMLElement) {
+            throw new InvalidResponseException();
+        }
 
-		$this->bindData($data);
-	}
+        $this->bindData($data);
+    }
 
-	/**
-	 * Bind data in the Response data object
-	 *
-	 * @param $data
-	 */
-	public function bindData($data) {
-		$secure  = new Secure();
-		$message = !empty($data->errormessage) ? (string) $data->errormessage : (string) $data->description;
-		$rebill  = new Rebill();
-		$secure
-			->setAcs((string) ($data->ACS ?: null))
-			->setPaReq((string) ($data->parameters->PaReq ?: null))
-			->setMd((string) ($data->parameters->MD ?: null))
-			->setTermUrl((string) ($data->parameters->TermUrl ?: null));
-		$windows = null;
-		if (isset($data->rebillwindows->window)) {
-			$windows = [];
-			foreach ($data->rebillwindows->window as $el) {
-				$windows[] = [
-					'from' => (string) $el['from'],
-					'to'   => (string) $el['to'],
-					'type' => (string) $el['type'],
-				];
-			}
-		}
-		$rebill
-			->setSecret((string) ($data->rebillsecret ?: null))
-			->setWindow($windows);
-		$this->data
-			->setIsSuccess(
-				self::SUCCESS == $data->result ||
-				self::AUTHORIZED == $data->result ||
-				self::CANCELED == $data->result ||
-				self::PENDING == $data->result ||
-				self::OK == $data->result ||
-				self::REQUEST_PENDING == $data->result
-			)
-			->setStatus((string) $data->result)
-			->setStatusCode((string) $data->errorcode)
-			->setMessage($message)
-			->setRefer((integer) ($data->transref ?: null))
-			->setTransId((string) ($data->gatetransid ?: null))
-			->setMerchantTransId((string) ($data->merchanttransid ?: null))
-			->setSecure($secure)
-			->setRebill($rebill)
-			->setRedirectUrl((string) ($data->customerurl ?: null));
-	}
+    /**
+     * Bind data in the Response data object
+     *
+     * @param $data
+     */
+    public function bindData($data)
+    {
+        $secure = new Secure();
+        $message = !empty($data->errormessage) ? (string)$data->errormessage : (string)$data->description;
+        $rebill = new Rebill();
+        $secure
+            ->setAcs((string)($data->ACS ?: null))
+            ->setPaReq((string)($data->parameters->PaReq ?: null))
+            ->setMd((string)($data->parameters->MD ?: null))
+            ->setTermUrl((string)($data->parameters->TermUrl ?: null));
+        $windows = null;
+        if (isset($data->rebillwindows->window)) {
+            $windows = [];
+            foreach ($data->rebillwindows->window as $el) {
+                $windows[] = [
+                    'from' => (string)$el['from'],
+                    'to' => (string)$el['to'],
+                    'type' => (string)$el['type'],
+                ];
+            }
+        }
+        $rebill
+            ->setSecret((string)($data->rebillsecret ?: null))
+            ->setWindow($windows);
+        $this->data
+            ->setIsSuccess(
+                self::SUCCESS == $data->result ||
+                self::AUTHORIZED == $data->result ||
+                self::CANCELED == $data->result ||
+                self::PENDING == $data->result ||
+                self::OK == $data->result ||
+                self::REQUEST_PENDING == $data->result
+            )
+            ->setStatus((string)$data->result)
+            ->setStatusCode((string)$data->errorcode)
+            ->setMessage($message)
+            ->setRefer((integer)($data->transref ?: null))
+            ->setTransId((string)($data->gatetransid ?: null))
+            ->setMerchantTransId((string)($data->merchanttransid ?: null))
+            ->setSecure($secure)
+            ->setRebill($rebill)
+//			->setRedirectUrl((string) ($data->customerurl ?: null));
+            ->setRedirectUrl((string)($data->redirect ?: null))
+            ->setTransaction($data->transaction);
+    }
 
-	/**
-	 * Get the ACS server url
-	 *
-	 * @return string
-	 */
-	public function getACS() {
-		return $this->data->getSecure()->getAcs();
-	}
+    /**
+     * Get the ACS server url
+     *
+     * @return string
+     */
+    public function getACS()
+    {
+        return $this->data->getSecure()->getAcs();
+    }
 
-	/**
-	 * Get the response status code
-	 * @return string
-	 */
-	public function getCode() {
-		return $this->data->getStatusCode();
-	}
+    /**
+     * Get the response status code
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->data->getStatusCode();
+    }
 
-	/**
-	 * Get redirect URL used after transaction finished
-	 *
-	 * @return string
-	 */
-	public function getCustomerUrl() {
-		return $this->data->getRedirectUrl();
-	}
+    /**
+     * Get redirect URL used after transaction finished
+     *
+     * @return string
+     */
+    public function getCustomerUrl()
+    {
+        return $this->data->getRedirectUrl();
+    }
 
-	/**
-	 * Get whole data response object
-	 *
-	 * @return Data
-	 */
-	public function getData() {
-		return parent::getData();
-	}
+    /**
+     * Get whole data response object
+     *
+     * @return Data
+     */
+    public function getData()
+    {
+        return parent::getData();
+    }
 
-	/**
-	 * Get the response description
-	 * @deprecated This method should be remove en in the next version instead getDescription use getMessage
-	 *
-	 * @return string
-	 */
-	public function getDescription() {
-		return $this->getMessage();
-	}
+    /**
+     * Get the response description
+     * @return string
+     * @deprecated This method should be remove en in the next version instead getDescription use getMessage
+     *
+     */
+    public function getDescription()
+    {
+        return $this->getMessage();
+    }
 
-	/**
-	 * Get the transaction id
-	 * @return string
-	 */
-	public function getGatewayTransactionId() {
-		return $this->data->getTransId();
-	}
+    /**
+     * Get the transaction id
+     * @return string
+     */
+    public function getGatewayTransactionId()
+    {
+        return $this->data->getTransId();
+    }
 
-	/**
-	 * Get MD use in 3d secure transaction
-	 *
-	 * @return string
-	 */
-	public function getMD() {
-		return $this->data->getSecure()->getMd();
-	}
+    /**
+     * Get MD use in 3d secure transaction
+     *
+     * @return string
+     */
+    public function getMD()
+    {
+        return $this->data->getSecure()->getMd();
+    }
 
-	/**
-	 * Get transaction id in merchant side
-	 *
-	 * @return string
-	 */
-	public function getMerchantTransId() {
-		return $this->data->getMerchantTransId();
-	}
+    /**
+     * Get transaction id in merchant side
+     *
+     * @return string
+     */
+    public function getMerchantTransId()
+    {
+        return $this->data->getMerchantTransId();
+    }
 
-	/**
-	 * Get the response message
-	 * @return string
-	 */
-	public function getMessage() {
-		return $this->data->getMessage();
-	}
+    /**
+     * Get the response message
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->data->getMessage();
+    }
 
-	/**
-	 * Get PaReq use in 3d secure transaction
-	 *
-	 * @return string
-	 */
-	public function getPaReq() {
-		return $this->data->getSecure()->getPaReq();
-	}
+    /**
+     * Get PaReq use in 3d secure transaction
+     *
+     * @return string
+     */
+    public function getPaReq()
+    {
+        return $this->data->getSecure()->getPaReq();
+    }
 
-	/**
-	 * Get rebill secret returned in the recurring transaction request
-	 *
-	 * @return string
-	 */
-	public function getRebillSecret() {
-		return $this->data->getRebill()->getSecret();
-	}
+    /**
+     * Get rebill secret returned in the recurring transaction request
+     *
+     * @return string
+     */
+    public function getRebillSecret()
+    {
+        return $this->data->getRebill()->getSecret();
+    }
 
-	/**
-	 * Get rebill windows
-	 *
-	 * @return \SimpleXMLElement | null
-	 */
-	public function getRebillWindows() {
-		return $this->data->getRebill()->getWindow();
-	}
+    /**
+     * Get rebill windows
+     *
+     * @return \SimpleXMLElement | null
+     */
+    public function getRebillWindows()
+    {
+        return $this->data->getRebill()->getWindow();
+    }
 
-	/**
-	 * Get status code
-	 *
-	 * @return string
-	 */
-	public function getResult() {
-		return $this->data->getStatus();
-	}
+    /**
+     * Get status code
+     *
+     * @return string
+     */
+    public function getResult()
+    {
+        return $this->data->getStatus();
+    }
 
-	/**
-	 * Get Term URL
-	 *
-	 * @return mixed
-	 */
-	public function getTermURL() {
-		return $this->data->getSecure()->getTermUrl();
-	}
+    /**
+     * Get Term URL
+     *
+     * @return mixed
+     */
+    public function getTermURL()
+    {
+        return $this->data->getSecure()->getTermUrl();
+    }
 
-	/**
-	 * Get the transaction reference
-	 *
-	 * @return string
-	 */
-	public function getTransactionReference() {
-		return $this->data->getRefer();
-	}
+    /**
+     * Get the transaction reference
+     *
+     * @return string
+     */
+    public function getTransactionReference()
+    {
+        return $this->data->getRefer();
+    }
 
-	/**
-	 * Return if the transaction was successful or not
-	 *
-	 * @return boolean
-	 */
-	public function isSuccessful() {
-		return $this->data->isSuccess();
-	}
+    /**
+     * Return if the transaction was successful or not
+     *
+     * @return boolean
+     */
+    public function isSuccessful()
+    {
+        return $this->data->isSuccess();
+    }
 }

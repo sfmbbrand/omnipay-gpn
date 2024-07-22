@@ -30,17 +30,6 @@ class PurchaseAuthorize extends AbstractRequest
     protected int $action;
 
     /**
-     * PurchaseAuthorize constructor.
-     *
-     * @param Client $httpClient
-     * @param Request $httpRequest
-     */
-    public function __construct(Client $httpClient, Request $httpRequest)
-    {
-        parent::__construct($httpClient, $httpRequest);
-    }
-
-    /**
      * @return string
      */
     public function getAccountId(): ?string
@@ -658,7 +647,14 @@ class PurchaseAuthorize extends AbstractRequest
             if ($bphone) {
                 $creditCard->addChild('billingphone1phone', $card->getShippingPhone());
             }
+
+            $returnUrl = $card->getReturnUrl();
+
+            if ($returnUrl) {
+                $creditCard->addChild('returnurl', $returnUrl);
+            }
         }
+//        $data->addChild('notificationsurl', 'https://dev2-privada.oje.pt/pay-cb/converge-gate');
 
         if (!is_null($this->getRebillAmount()) || (!is_null($this->isRebill()) && $this->isRebill())) {
             $rebill = $data->addChild('rebill');

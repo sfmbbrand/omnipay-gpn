@@ -24,7 +24,7 @@ class Transaction extends PurchaseAuthorize {
 	 */
 	public function __construct(Client $httpClient, Request $httpRequest) {
 		parent::__construct($httpClient, $httpRequest);
-		$this->cmd = 708;
+		$this->cmd = 709;
 	}
 
 	public function getCheckSum(): string
