@@ -160,7 +160,11 @@ class Data {
     }
 
     public function setTransaction($transaction) {
-        return $this->transaction = $transaction;
+        foreach ((array)$transaction as $key => $value) {
+            $this->transaction[$key] = (string)$value;
+        }
+
+        return $this->transaction;
     }
 
 	/**

@@ -649,7 +649,7 @@ class PurchaseAuthorize extends AbstractRequest
             }
 
             $returnUrl = $card->getReturnUrl();
-
+//vdp($returnUrl);
             if ($returnUrl) {
                 $creditCard->addChild('returnurl', $returnUrl);
             }
