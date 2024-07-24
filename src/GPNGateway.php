@@ -15,8 +15,7 @@ use Omnipay\GPNDataEurope\Message\Capture;
 use Omnipay\GPNDataEurope\Message\Complete;
 use Omnipay\Common\Exception\RuntimeException;
 use Omnipay\GPNDataEurope\Message\PurchaseAuthorize;
-use Omnipay\GPNDataEurope\Message\Notification\Notification;
-use Omnipay\GPNDataEurope\Message\Notification\DisputeNotification;
+use Omnipay\GPNDataEurope\Message\Notification;
 
 /**
  *
