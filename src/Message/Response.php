@@ -13,6 +13,7 @@ use Omnipay\GPNDataEurope\Response\Secure;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use SimpleXMLElement;
 
 /**
  * Class Response
@@ -37,22 +38,25 @@ class Response extends AbstractResponse
 
     const SUCCESS = 'SUCCESS';
 
+    public SimpleXMLElement $xmlData;
+
     /**
      * Api700Response constructor.
      *
      * @param RequestInterface $request
      * @param mixed $data
+     * @throws InvalidResponseException
      */
     public function __construct(RequestInterface $request, $data)
     {
-        $this->request = $request;
-        $this->xmlData = $data;
-        $this->data = new Data();
+        parent::__construct($request, $data);
 
-        if (!$data instanceof \SimpleXMLElement) {
+        if (!$data instanceof SimpleXMLElement) {
             throw new InvalidResponseException();
         }
 
+        $this->data = new Data();
+        $this->xmlData = $data;
         $this->bindData($data);
     }
 
@@ -218,7 +222,7 @@ class Response extends AbstractResponse
     /**
      * Get rebill windows
      *
-     * @return \SimpleXMLElement | null
+     * @return SimpleXMLElement | null
      */
     public function getRebillWindows()
     {
