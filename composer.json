@@ -28,7 +28,7 @@
         "psr-4": { "Omnipay\\GPNDataEurope\\" : "src/" }
     },
     "require": {
-        "php": ">=8.0",
+        "php": ">=7.4",
         "ext-bcmath": "*",
         "omnipay/common": "^v3.3.0",
         "symfony/http-client": "^7.1.2",
