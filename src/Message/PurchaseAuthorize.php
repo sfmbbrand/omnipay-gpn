@@ -228,7 +228,7 @@ class PurchaseAuthorize extends AbstractRequest
         return $this->getParameter('rebillDescription');
     }
 
-    public function getRebillFollowupAmount(): float|string|null
+    public function getRebillFollowupAmount()
     {
         return $this->getParameter('rebillFollowupAmount');
     }
