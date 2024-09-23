@@ -31,7 +31,7 @@
         "php": ">=7.4",
         "ext-bcmath": "*",
         "omnipay/common": "^v3.3.0",
-        "symfony/http-client": "^5.4.43",
+        "symfony/http-client": "^5.4.5",
         "php-http/guzzle6-adapter": "2.0.2",
         "ext-simplexml": "*"
     },
