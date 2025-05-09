@@ -30,9 +30,9 @@
     "require": {
         "php": ">=8.0",
         "ext-bcmath": "*",
-        "omnipay/common": "^v3.3.0",
-        "symfony/http-client": "^7.1.2",
-        "php-http/guzzle7-adapter": "^1.0.0",
+        "omnipay/common": "^v3.4.0",
+        "symfony/http-client": "^7.2.4",
+        "php-http/guzzle7-adapter": "^1.1.0",
       "ext-simplexml": "*"
     },
     "require-dev": {
